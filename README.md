@@ -3,6 +3,7 @@ A tiny C++ bit reader
 
 Example test & usage:
 
+```cpp
 TEST(bitread, constructor_1)
 {
   // 00110011 11001100 10101010 01010101
@@ -57,3 +58,4 @@ TEST(bitread, constructor_2)
   EXPECT_EQ(0b0011    , br.get<uint8_t>(24,4));
   EXPECT_EQ(0b010     , br.get<uint8_t>(5,3));
 }
+```
