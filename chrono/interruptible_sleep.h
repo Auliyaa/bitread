@@ -12,7 +12,7 @@ bool _sleep_for(const std::chrono::duration<R1,P1>& duration,
     {
       return sw;
     }
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    std::this_thread::sleep_for(check_frequency);
   }
   return sw;
 }
