@@ -74,3 +74,4 @@ public:\
 private:\
   void* __##name##__handle__{__reg_value_(key, default_value, _data)};
 
+#define SETTING_ENTRY_NODEF(type, name, key) SETTING_ENTRY(type, name, key, type())
