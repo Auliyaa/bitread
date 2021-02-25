@@ -4,13 +4,13 @@
 
 struct settings_value
 {
-  sxe::nlohmann::json value;
-  sxe::nlohmann::json default_value;
+  nlohmann::json value;
+  nlohmann::json default_value;
 
   settings_value() = default;
   settings_value(const settings_value&) = default;
   settings_value(settings_value&&) = default;
-  settings_value(const sxe::nlohmann::json& default_value) : value(default_value), default_value(default_value) {}
+  settings_value(const nlohmann::json& default_value) : value(default_value), default_value(default_value) {}
 
   settings_value& operator=(const settings_value&) = default;
 
@@ -28,8 +28,8 @@ public:
 
   virtual ~settings() = default;
 
-  sxe::nlohmann::json to_json() const;
-  sxe::nlohmann::json to_defaults_json() const;
+  nlohmann::json to_json() const;
+  nlohmann::json to_defaults_json() const;
 
   std::vector<std::string> keys() const;
   bool has_key(const std::string& key) const;
@@ -57,12 +57,12 @@ public:
     return l->second.value.get<T>();
   }
 
-  inline operator sxe::nlohmann::json() const { return to_json(); }
+  inline operator nlohmann::json() const { return to_json(); }
   inline operator std::string() const { return to_json().dump(); }
 
 protected:
   std::map<std::string, settings_value> _data;
-  static void* __reg_value_(const std::string& key, const sxe::nlohmann::json& d, std::map<std::string, settings_value>& store);
+  static void* __reg_value_(const std::string& key, const nlohmann::json& d, std::map<std::string, settings_value>& store);
 };
 
 #define SETTING_ENTRY(type, name, key, default_value)\

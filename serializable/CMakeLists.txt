@@ -1,5 +1,7 @@
 project(serializable)
 
+set(CMAKE_CXX_STANDARD 11)
+
 add_executable(ser-test
   main.cpp
   settings.cpp

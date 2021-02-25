@@ -5,10 +5,10 @@
 
 settings::settings(const std::string& default_conf_path, const std::string& conf_path)
 {
-  static auto read_json = [](const std::string& path) -> sxe::nlohmann::json
+  static auto read_json = [](const std::string& path) -> nlohmann::json
   {
     std::ifstream contents(path);
-    sxe::nlohmann::json result;
+    nlohmann::json result;
     contents >> result;
     return result;
   };
@@ -16,7 +16,7 @@ settings::settings(const std::string& default_conf_path, const std::string& conf
   if (!default_conf_path.empty())
   {
     auto json = read_json(default_conf_path).flatten();
-    for (const auto& kv : json.get<sxe::nlohmann::json::object_t>())
+    for (const auto& kv : json.get<nlohmann::json::object_t>())
     {
       auto k = kv.first;
       boost::replace_all(k, "/", ".");
@@ -29,7 +29,7 @@ settings::settings(const std::string& default_conf_path, const std::string& conf
     try
     {
       auto json = read_json(conf_path).flatten();
-      for (const auto& kv : json.get<sxe::nlohmann::json::object_t>())
+      for (const auto& kv : json.get<nlohmann::json::object_t>())
       {
         auto k = kv.first;
         boost::replace_all(k, "/", ".");
@@ -41,9 +41,9 @@ settings::settings(const std::string& default_conf_path, const std::string& conf
   }
 }
 
-sxe::nlohmann::json settings::to_json() const
+nlohmann::json settings::to_json() const
 {
-  sxe::nlohmann::json j;
+  nlohmann::json j;
   for (const auto& kv : _data)
   {
     std::vector<std::string> tkns;
@@ -54,7 +54,10 @@ sxe::nlohmann::json settings::to_json() const
       auto& tkn = tkns[ii];
       if (tkn.empty()) continue;
 
-      (*p)[tkn] = sxe::nlohmann::json{};
+      if (p->find(tkn) == p->end())
+      {
+        (*p)[tkn] = nlohmann::json{};
+      }
       p = &((*p)[tkn]);
     }
 
@@ -63,9 +66,9 @@ sxe::nlohmann::json settings::to_json() const
   return j;
 }
 
-sxe::nlohmann::json settings::to_defaults_json() const
+nlohmann::json settings::to_defaults_json() const
 {
-  sxe::nlohmann::json j;
+  nlohmann::json j;
   for (const auto& kv : _data)
   {
     std::vector<std::string> tkns;
@@ -76,7 +79,10 @@ sxe::nlohmann::json settings::to_defaults_json() const
       auto& tkn = tkns[ii];
       if (tkn.empty()) continue;
 
-      (*p)[tkn] = sxe::nlohmann::json{};
+      if (p->find(tkn) == p->end())
+      {
+        (*p)[tkn] = nlohmann::json{};
+      }
       p = &((*p)[tkn]);
     }
 
@@ -107,7 +113,7 @@ bool settings::is_default(const std::string& key) const
 }
 
 void* settings::__reg_value_(const std::string& key,
-                               const sxe::nlohmann::json& d,
+                               const nlohmann::json& d,
                                std::map<std::string, settings_value>& store)
 {
   store[key] = settings_value(d);

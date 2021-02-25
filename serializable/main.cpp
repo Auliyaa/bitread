@@ -1,4 +1,5 @@
 #include "settings.h"
+#include <iostream>
 
 class my_settings: public settings
 {
