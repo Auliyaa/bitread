@@ -1,11 +1,11 @@
-#include <evs-sxe-core/system/file.h>
+#include <file.h>
 #include <boost/algorithm/string.hpp>
 
 #include <fstream>
 
-using namespace SXE_NAMESPACE::core;
+using namespace os::topo;
 
-std::vector<std::string> file::read_lines(const std::string& path) throw(std::runtime_error)
+std::vector<std::string> file::read_lines(const std::string& path)
 {
   std::ifstream fd;
   fd.open(path, std::ios::in);

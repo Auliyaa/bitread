@@ -1,14 +1,13 @@
 #pragma once
 
-#include <evs-sxe-core/Namespace.h>
-
 #include <cstdlib>
 #include <limits>
 #include <stdexcept>
 #include <vector>
 #include <map>
 
-BEGIN_SXE_MODULE(core)
+namespace os::topo
+{
 
 /// @brief maps cpuinfo from /proc/cpuinfo & /proc/stat
 class cpu
@@ -65,7 +64,7 @@ public:
   inline size_t id() const { return _id; }
 
   /// @return the core stats snapshot. throws if the core id is invalid.
-  SXE_NAMESPACE::core::cpu::stats_t stats() const throw(std::runtime_error);
+  os::topo::cpu::stats_t stats() const;
 
   /// @return the number of cpu cores reported by /proc/stat.
   static size_t nproc(bool with_siblings=true);
@@ -77,4 +76,4 @@ public:
   bool is_ht_sibling() const;
 };
 
-END_SXE_MODULE(core)
+} // os::topo

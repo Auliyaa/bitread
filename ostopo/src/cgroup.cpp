@@ -1,10 +1,10 @@
-#include <evs-sxe-core/system/cgroup.h>
+#include <cgroup.h>
 
 #include <algorithm>
 #include <sstream>
 #include <fstream>
 
-using namespace SXE_NAMESPACE::core;
+using namespace os::topo;
 
 // filesystem reading helper
 // convert to number

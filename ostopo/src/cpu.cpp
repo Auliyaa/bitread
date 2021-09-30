@@ -1,12 +1,13 @@
-#include <evs-sxe-core/system/cpu.h>
-#include <evs-sxe-core/system/file.h>
+#include <cpu.h>
+#include <file.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/regex.hpp>
 
 #include <atomic>
+#include <sstream>
 
-using namespace SXE_NAMESPACE::core;
+using namespace os::topo;
 
 std::vector<::size_t> cpu::_topo_all_cores{};
 std::vector<::size_t> cpu::_topo_non_siblings_cores{};
@@ -107,7 +108,7 @@ cpu::cpu(size_t id)
   read_topology();
 }
 
-cpu::stats_t cpu::stats() const throw(std::runtime_error)
+cpu::stats_t cpu::stats() const
 {
   std::string cpu_name = "cpu";
   if (_id != std::numeric_limits<::size_t>::max())

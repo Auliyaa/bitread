@@ -1,13 +1,13 @@
 #pragma once
 
-#include <evs-sxe-core/Namespace.h>
-#include <evs-sxe-core/system/cpu.h>
+#include <cpu.h>
 #include <vector>
 #include <map>
 #include <list>
 #include <cstdlib>
 
-BEGIN_SXE_MODULE(core)
+namespace os::topo
+{
 
 /// @brief wraps information about a specific process from /proc/<pid>
 class pid
@@ -18,7 +18,7 @@ class pid
   // returns the path the stat file in the /proc filesystem.
   std::string stat_path() const;
   // convenience method to read & split the stat file.
-  static std::vector<std::string> read_stat(const std::string& p) throw(std::runtime_error);
+  static std::vector<std::string> read_stat(const std::string& p);
 public:
   /// @brief wraps the stats (/proc/<pid>/stat) for a pid and is used to compute cpu usage for a given process.
   struct stats_t
@@ -66,7 +66,7 @@ public:
     /// @return this task id (tid)
     inline ::pid_t tid() const { return _tid; }
     /// @return the stats snapshot for this task. throws if either the pid or the tid is invalid.
-    SXE_NAMESPACE::core::pid::stats_t stats() const throw(std::runtime_error);
+    os::topo::pid::stats_t stats() const;
   };
 
   pid(::pid_t id);
@@ -81,15 +81,15 @@ public:
   /// @return the tcomm column of the stat file, which corresponds to the filename for this process.
   std::string tcomm() const;
   /// @return the stats snapshot for the whole process.
-  SXE_NAMESPACE::core::pid::stats_t stats() const throw(std::runtime_error);
+  os::topo::pid::stats_t stats() const;
   /// @return all tasks associated to this process.
-  std::vector<SXE_NAMESPACE::core::pid::task> tasks() const;
+  std::vector<os::topo::pid::task> tasks() const;
   /// @return all stats for all tasks associated to this pid
   std::map<pid_t, stats_t> tasks_stats() const;
   /// @return the cpu core affinity list of this pid
-  std::list<SXE_NAMESPACE::core::cpu> affinity() const;
+  std::list<os::topo::cpu> affinity() const;
   /// @brief assigns a cpuset affinity for the current pid
-  void set_affinity(const std::list<SXE_NAMESPACE::core::cpu>& cpus) throw(std::runtime_error);
+  void set_affinity(const std::list<os::topo::cpu>& cpus);
 };
 
-END_SXE_MODULE(core)
+} // os::topo

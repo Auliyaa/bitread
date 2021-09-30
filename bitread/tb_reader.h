@@ -1,3 +1,6 @@
+#include <cstdint>
+#include <cstdlib>
+
 /// Parses 10-bits words from a source 8-bits buffer.
 struct tb_reader
 {

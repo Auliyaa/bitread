@@ -1,3 +1,7 @@
+#include <streambuf>
+#include <ostream>
+#include <systemd/sd-journal.h>
+
 class sd_logger: public std::streambuf
 {
   int _l;
@@ -28,3 +32,14 @@ protected:
 std::ostream sd_logger_info{&__sd_logger_info};
 std::ostream sd_logger_warn{&__sd_logger_warn};
 std::ostream sd_logger_err{&__sd_logger_err};
+
+
+#include <iostream>
+int main()
+{
+  sd_logger_info << "info" << std::endl;
+  sd_logger_warn << "warn" << std::endl;
+  sd_logger_err << "err" << std::endl;
+  std::cout << "run journalctl -xe to see your messages" << std::endl;
+  return 0;
+}

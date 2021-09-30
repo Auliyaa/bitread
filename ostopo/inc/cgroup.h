@@ -1,12 +1,12 @@
 #pragma once
 
-#include <evs-sxe-core/Namespace.h>
 #include <string>
 #include <list>
 
-#include <evs-sxe-core/system/cpu.h>
+#include <cpu.h>
 
-BEGIN_SXE_MODULE(core)
+namespace os::topo
+{
 
 /**
  * @brief Wraps information about a registered cgroup
@@ -31,7 +31,7 @@ public:
   virtual ~cgroup()=default;
 
   /// @return the list of cpus assigned to this group
-  std::list<SXE_NAMESPACE::core::cpu> cpuset() const;
+  std::list<os::topo::cpu> cpuset() const;
   /// @return true if this cgroup  is cpu exclusive
   bool exclusive() const;
   /// @return the list of cpumems assigned to this group
@@ -40,4 +40,4 @@ public:
   bool cpumems_exclusive() const;
 };
 
-END_SXE_MODULE(core)
+} // os::topo

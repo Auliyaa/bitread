@@ -1,10 +1,10 @@
-#include <evs-sxe-core/system/pid.h>
+#include <pid.h>
+#include <file.h>
 
-#include <evs-sxe-core/system/file.h>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 
-using namespace SXE_NAMESPACE::core;
+using namespace os::topo;
 
 // pid::stats_t
 size_t pid::stats_t::total() const
@@ -33,7 +33,7 @@ pid::task::task(pid_t pid, pid_t tid)
 {
 }
 
-sxe::core::pid::stats_t pid::task::stats() const throw(std::runtime_error)
+os::topo::pid::stats_t pid::task::stats() const
 {
   auto tkns = pid::read_stat(stat_path());
   stats_t r;
@@ -49,7 +49,7 @@ std::string pid::stat_path() const
   return "/proc/" + std::to_string(_id) + "/stat";
 }
 
-std::vector<std::string> pid::read_stat(const std::string& p) throw(std::runtime_error)
+std::vector<std::string> pid::read_stat(const std::string& p)
 {
   auto lines = file::read_lines(p);
   std::vector<std::string> tkns;
@@ -67,7 +67,7 @@ std::string pid::tcomm() const
   return read_stat(stat_path())[1];
 }
 
-sxe::core::pid::stats_t pid::stats() const throw(std::runtime_error)
+os::topo::pid::stats_t pid::stats() const
 {
   auto tkns = read_stat(stat_path());
   stats_t r;
@@ -82,9 +82,9 @@ sxe::core::pid::stats_t pid::stats() const throw(std::runtime_error)
   return r;
 }
 
-std::vector<sxe::core::pid::task> pid::tasks() const
+std::vector<os::topo::pid::task> pid::tasks() const
 {
-  std::vector<sxe::core::pid::task> r;
+  std::vector<os::topo::pid::task> r;
 
   // tids are located under the /task subfolder
   boost::filesystem::path p("/proc/" + std::to_string(_id) + "/task/");
@@ -97,9 +97,9 @@ std::vector<sxe::core::pid::task> pid::tasks() const
   return r;
 }
 
-std::map<pid_t, sxe::core::pid::stats_t> pid::tasks_stats() const
+std::map<pid_t, os::topo::pid::stats_t> pid::tasks_stats() const
 {
-  std::map<pid_t, sxe::core::pid::stats_t> r;
+  std::map<pid_t, os::topo::pid::stats_t> r;
   for (const auto t : tasks())
   {
     r[t.tid()] = t.stats();
@@ -123,7 +123,7 @@ std::list<cpu> pid::affinity() const
   return r;
 }
 
-void pid::set_affinity(const std::list<cpu>& cpus) throw(std::runtime_error)
+void pid::set_affinity(const std::list<cpu>& cpus)
 {
   // prepare cpuset
   cpu_set_t mask;
